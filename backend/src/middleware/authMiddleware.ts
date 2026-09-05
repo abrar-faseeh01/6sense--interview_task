@@ -18,7 +18,7 @@ export const authMiddleware = async (
   try {
     const decoded: any = jwt.verify(
       token,
-      process.env.JWT_SECRET || "supersecret",
+      process.env.JWT_SECRET as string,
     );
     const user = await User.findById(decoded.userId).select("-passwordHash");
 
@@ -48,7 +48,7 @@ export const optionalAuthMiddleware = async (
     try {
       const decoded: any = jwt.verify(
         token,
-        process.env.JWT_SECRET || "supersecret",
+        process.env.JWT_SECRET as string,
       );
       const user = await User.findById(decoded.userId).select("-passwordHash");
       if (user) {

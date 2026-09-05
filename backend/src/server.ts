@@ -47,10 +47,12 @@ const startServer = async () => {
   const mongoUri = process.env.MONGODB_URI;
 
   if (!mongoUri) {
-    console.error(
-      "ERROR: MONGODB_URI is not set. Please create a .env file with your MongoDB connection string.\n" +
-        "See backend/.env.example for reference.",
-    );
+    console.error("FATAL ERROR: MONGODB_URI environment variable is missing.");
+    process.exit(1);
+  }
+
+  if (!process.env.JWT_SECRET) {
+    console.error("FATAL ERROR: JWT_SECRET environment variable is missing.");
     process.exit(1);
   }
 

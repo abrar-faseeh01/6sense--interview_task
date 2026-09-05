@@ -66,7 +66,7 @@ router.post("/register", async (req, res, next) => {
 
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET || "supersecret",
+      process.env.JWT_SECRET as string,
       { expiresIn: "1h" },
     );
     sendSuccess(res, { token });
@@ -122,7 +122,7 @@ router.post("/login", async (req, res, next) => {
 
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET || "supersecret",
+      process.env.JWT_SECRET as string,
       { expiresIn: "1h" },
     );
     sendSuccess(res, { token });
