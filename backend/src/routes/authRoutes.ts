@@ -54,13 +54,15 @@ const router = Router();
 router.post("/register", async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
+    const normalizedEmail =
+      typeof email === "string" ? email.trim().toLowerCase() : email;
 
     if (!password || password.length < 6) {
       return sendError(res, 400, "Password must be at least 6 characters long");
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, passwordHash });
+    const user = new User({ name, email: normalizedEmail, passwordHash });
 
     await user.save();
 
@@ -109,8 +111,10 @@ router.post("/register", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    const normalizedEmail =
+      typeof email === "string" ? email.trim().toLowerCase() : email;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       return sendError(res, 401, "Invalid credentials");
     }
@@ -155,7 +159,6 @@ router.post("/login", async (req, res, next) => {
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.get("/me", authMiddleware, (req, res) => {
-
   sendSuccess(res, { user: (req as any).user });
 });
 

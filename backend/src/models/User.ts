@@ -34,6 +34,8 @@ const userSchema = new Schema<IUser>(
       required: true,
       unique: true,
       match: /^\S+@\S+\.\S+$/,
+      lowercase: true,
+      trim: true,
     },
     passwordHash: { type: String, required: true },
     skills: [{ type: String }],
