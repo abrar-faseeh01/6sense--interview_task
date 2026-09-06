@@ -13,6 +13,7 @@ interface AuthContextType {
   login: (token: string) => void;
   logout: () => void;
   isLoading: boolean;
+  updateUser: (updatedUser: User) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -45,9 +46,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = (token: string) => {
     localStorage.setItem("token", token);
-    apiClient.get("/auth/me").then((res: any) => {
-      setUser(res.data.user);
-    });
+    apiClient
+      .get("/auth/me")
+      .then((res: any) => {
+        setUser(res.data.user);
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
+        setUser(null);
+      });
   };
 
   const logout = () => {
@@ -56,8 +63,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     navigate("/");
   };
 
+  const updateUser = (updatedUser: User) => {
+    setUser(updatedUser);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, isLoading, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

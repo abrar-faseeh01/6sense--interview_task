@@ -13,6 +13,7 @@ export const sendError = (
 ) => {
   const response: any = {
     success: false,
+    statusCode,
     message,
   };
 

@@ -54,8 +54,18 @@ const router = Router();
 router.post("/register", async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
-    const normalizedEmail =
-      typeof email === "string" ? email.trim().toLowerCase() : email;
+    if (typeof email !== "string") {
+      return sendError(res, 400, "Invalid email format");
+    }
+
+    if (typeof password !== "string") {
+      return sendError(res, 400, "Invalid password format");
+    }
+
+    if (typeof name !== "string") {
+      return sendError(res, 400, "Invalid name format");
+    }
+    const normalizedEmail = email.trim().toLowerCase();
 
     if (!password || password.length < 6) {
       return sendError(res, 400, "Password must be at least 6 characters long");
@@ -111,8 +121,14 @@ router.post("/register", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const normalizedEmail =
-      typeof email === "string" ? email.trim().toLowerCase() : email;
+    if (typeof email !== "string") {
+      return sendError(res, 400, "Invalid email format");
+    }
+
+    if (typeof password !== "string") {
+      return sendError(res, 400, "Invalid password format");
+    }
+    const normalizedEmail = email.trim().toLowerCase();
 
     const user = await User.findOne({ email: normalizedEmail });
     if (!user) {

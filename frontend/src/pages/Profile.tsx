@@ -30,7 +30,7 @@ const btnDanger = "text-red-400 hover:text-red-300 text-sm transition-colors";
 
 export const Profile = () => {
   const { id } = useParams();
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -74,6 +74,14 @@ export const Profile = () => {
         experiences: editExperiences,
       });
       setProfile(res.data);
+      // Sync the global AuthContext so the navbar reflects the updated name immediately
+      if (user) {
+        updateUser({
+          _id: user._id,
+          name: res.data.name,
+          email: res.data.email,
+        });
+      }
       setIsEditing(false);
     } catch {
       alert("Failed to save profile");

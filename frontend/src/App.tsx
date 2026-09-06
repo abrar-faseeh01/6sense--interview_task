@@ -94,6 +94,17 @@ const Navigation = () => {
     </nav>
   );
 };
+const NotFound = () => {
+  return (
+    <div className="text-center py-16">
+      <h1 className="text-2xl font-bold mb-4">Page not found</h1>
+      <Link to="/" className="text-indigo-400 hover:text-indigo-300">
+        Go back home
+      </Link>
+    </div>
+  );
+};
+
 const AppContent = () => {
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100">
@@ -119,6 +130,7 @@ const AppContent = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/create-post" element={<CreatePost />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
     </div>

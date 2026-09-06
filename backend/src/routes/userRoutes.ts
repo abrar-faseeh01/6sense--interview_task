@@ -43,7 +43,6 @@ const router = Router();
  */
 // Get public profile
 router.get("/:id", async (req, res, next) => {
-
   try {
     const { id } = req.params;
 
@@ -51,7 +50,7 @@ router.get("/:id", async (req, res, next) => {
       return sendError(res, 400, "Invalid user ID");
     }
 
-    const user = await User.findById(id).select("-passwordHash");
+    const user = await User.findById(id).select("-passwordHash -email");
 
     if (!user) {
       return sendError(res, 404, "User not found");
@@ -129,7 +128,6 @@ router.get("/:id", async (req, res, next) => {
  */
 // Update own profile
 router.patch("/me", authMiddleware, async (req, res, next) => {
-
   try {
     const userId = (req as any).user._id;
     const { skills, experiences, name } = req.body;

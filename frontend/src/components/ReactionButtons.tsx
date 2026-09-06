@@ -1,6 +1,7 @@
 import { faThumbsDown, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+
 import { Link } from "react-router-dom";
 import { apiClient } from "../api/client";
 import { useAuth } from "../context/AuthContext";
@@ -28,13 +29,14 @@ export const ReactionButtons = ({
 
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [reactionError, setReactionError] = useState("");
 
   const handleReact = async (type: "like" | "dislike") => {
     if (!user) {
       setShowLoginModal(true);
       return;
     }
-
+    setReactionError("");
     try {
       const endpoint =
         targetType === "post"
@@ -48,6 +50,7 @@ export const ReactionButtons = ({
       setUserReaction(res.data.userReaction);
     } catch (err) {
       console.error("Failed to react", err);
+      setReactionError("Couldn't update reaction. Please try again.");
     }
   };
 
@@ -76,6 +79,10 @@ export const ReactionButtons = ({
           <FontAwesomeIcon icon={faThumbsDown} /> {dislikes}
         </button>
       </div>
+
+      {reactionError && (
+        <p className="mt-2 text-sm text-red-400">{reactionError}</p>
+      )}
 
       {showLoginModal && (
         <div

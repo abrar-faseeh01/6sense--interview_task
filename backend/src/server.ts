@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import { errorHandler } from "./middleware/errorHandler.js";
-import { sendSuccess } from "./utils/response.js";
+import { sendError, sendSuccess } from "./utils/response.js";
 
 dotenv.config();
 
@@ -37,6 +37,11 @@ app.get("/health", (req, res) => {
     status: "ok",
     db: isDbConnected ? "connected" : "disconnected",
   });
+});
+
+// 404 handler
+app.use((req, res) => {
+  sendError(res, 404, "Route not found");
 });
 
 // Global Error Handler

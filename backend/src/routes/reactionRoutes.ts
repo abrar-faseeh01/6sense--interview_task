@@ -1,6 +1,8 @@
 import { Router } from "express";
 import mongoose from "mongoose";
 import { authMiddleware } from "../middleware/authMiddleware.js";
+import Comment from "../models/Comment.js";
+import Post from "../models/Post.js";
 import Reaction from "../models/Reaction.js";
 import { sendError, sendSuccess } from "../utils/response.js";
 
@@ -106,6 +108,9 @@ router.post("/posts/:id/reactions", authMiddleware, async (req, res, next) => {
 
     if (!mongoose.Types.ObjectId.isValid(id))
       return sendError(res, 400, "Invalid ID");
+    const post = await Post.findById(id);
+    if (!post) return sendError(res, 404, "Post not found");
+
     if (!["like", "dislike"].includes(type))
       return sendError(res, 400, "Invalid reaction type");
 
@@ -178,6 +183,9 @@ router.post(
 
       if (!mongoose.Types.ObjectId.isValid(id))
         return sendError(res, 400, "Invalid ID");
+
+      const comment = await Comment.findById(id);
+      if (!comment) return sendError(res, 404, "Comment not found");
       if (!["like", "dislike"].includes(type))
         return sendError(res, 400, "Invalid reaction type");
 
