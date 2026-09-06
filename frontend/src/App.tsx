@@ -14,10 +14,10 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="flex-1 grid grid-cols-[1fr_auto_1fr] items-center text-base font-medium">
+    <nav className="flex-1 grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-0 text-base font-medium">
       <div />
 
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-4 sm:gap-8">
         <Link to="/" className="hover:text-indigo-400 transition-colors">
           Home
         </Link>
@@ -41,7 +41,7 @@ const Navigation = () => {
         ) : (
           <Link
             to="/create-post"
-            className="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded-md transition-colors"
+            className="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded-md whitespace-nowrap transition-colors"
           >
             + Create Post
           </Link>
